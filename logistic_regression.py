@@ -20,12 +20,12 @@ with open(sys.argv[1],newline='') as csvfile:
     data = np.array(data)
     data = np.delete(data,2,0)              ## Missing data => remove
 
-    data = np.delete(data,0,0)              ## Positive(attribute #4 = 2) outlier => remove   
-    data = np.delete(data,4,0) 
-    data = np.delete(data,5,0) 
-    data = np.delete(data,6,0) 
-    data = np.delete(data,11,0) 
-    data = np.delete(data,2542,0) 
+    #data = np.delete(data,0,0)              ## Positive(attribute #4 = 2) outlier => remove   
+    #data = np.delete(data,4,0) 
+    #data = np.delete(data,5,0) 
+    #data = np.delete(data,6,0) 
+    #data = np.delete(data,11,0) 
+    #data = np.delete(data,2542,0)   
 
     data = np.delete(data,176,1)            ## These columns have std = 0 => remove
     data = np.delete(data,167,1)
@@ -35,7 +35,7 @@ with open(sys.argv[1],newline='') as csvfile:
     data = np.delete(data,4,1) 
     data = np.delete(data,166,1)  
     data = np.delete(data,165,1)  
-    data = np.delete(data,164,1)  
+    data = np.delete(data,164,1)   
 
     for i in range(data.shape[1]): 
         if i == 3 :                                                     ## Transform label of attribute #4 '2' to 1(positive), '1' to 0(negative) 
@@ -87,11 +87,7 @@ with open(sys.argv[2],newline='') as csvfile:
         data.append(row) 
     data = data[2:]
     
-    data = np.array(data)
-    data = np.delete(data,1103,0)                                       ## Missing data => remove
-    data = np.delete(data,1102,0) 
-    data = np.delete(data,699,0) 
-    data = np.delete(data,5,0)               
+    data = np.array(data)             
 
     data = np.delete(data,176,1)                                        ## These columns have std = 0 => remove            
     data = np.delete(data,167,1)

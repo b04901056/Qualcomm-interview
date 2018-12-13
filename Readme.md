@@ -7,6 +7,8 @@ This the Readme file of Qualcomm interview task
 - matplotlib
 - sklearn
 - imblearn
+- scipy
+- math
 
 ## Instruction to run the code
 

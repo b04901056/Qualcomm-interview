@@ -33,70 +33,81 @@ class Datamanager():
             for row in rows:
                 data.append(row) 
             data = data[2:]
-            
-            data = np.array(data)
-            if name == 'train' :                                                                 
-                data = np.delete(data,2,0)                                                      ## Missing data => remove
-                data = np.delete(data,0,0)                                                      ## Positive(attribute #4 = 2) outlier => remove        
-                data = np.delete(data,4,0) 
-                data = np.delete(data,5,0) 
-                data = np.delete(data,6,0) 
-                data = np.delete(data,11,0) 
-                data = np.delete(data,2542,0)           
-            if name == 'test' :  
-                data = np.delete(data,1103,0) 
-                data = np.delete(data,1102,0) 
-                data = np.delete(data,699,0) 
-                data = np.delete(data,5,0) 
 
-            data = np.delete(data,176,1)                                                        ## These columns have std = 0 => remove
+            
+            data = np.array(data)  
+
+            #if name == 'train' :                                                                  
+                #data = np.delete(data,0,0)                                                      ## Positive(attribute #4 = 2) outlier => remove        
+                #data = np.delete(data,4,0) 
+                #data = np.delete(data,5,0) 
+                #data = np.delete(data,6,0) 
+                #data = np.delete(data,11,0) 
+                #data = np.delete(data,2542,0)    
+    
+            data = np.delete(data,176,1)            ## These columns have std = 0 => remove
             data = np.delete(data,167,1)
             data = np.delete(data,166,1)
             data = np.delete(data,165,1)         
             data = np.delete(data,5,1)
-            data = np.delete(data,4,1)
+            data = np.delete(data,4,1) 
             data = np.delete(data,166,1)  
             data = np.delete(data,165,1)  
-            data = np.delete(data,164,1) 
+            data = np.delete(data,164,1)  
  
-            for i in range(data.shape[1]):           
-                if i == 3 : 
+            feature_num = data.shape[1] 
+            for i in range(feature_num):           
+                if i == 3: 
                     for j in range(data.shape[0]):                                              ## Transform label of attribute #4 '2' to 1(positive), '1' to 0(negative) 
                         if data[j][i] == '1':
                             data[j][i] = 0
                         elif data[j][i] == '2':
                             data[j][i] = 1
                         else:
+                            print(j)
                             print('error target')
-                elif data[0][i] == 'TRUE' or data[0][i] == 'FALSE': #                           ## Transform label 'TRUE' to 1, 'Negative' to 0
+                elif i == 163:                                                                  ## One hot encoding
+
+                elif i == 164:                                                                  ## One hot encoding
+
+                elif i == 169:                                                                  ## One hot encoding
+
+                elif data[0][i] == 'TRUE' or data[0][i] == 'FALSE':                             ## One hot encoding
+                    one_hot = []
                     for j in range(data.shape[0]):
                         if data[j][i] == 'TRUE':
-                            data[j][i] = 1.0
+                            one_hot.append([1,0])
                         elif data[j][i] == 'FALSE':
-                            data[j][i] = 0.0
+                            one_hot.append([0,1])
                         else:
                             print(j,i,data[j][i]) 
-                            print('other type')
-                    mean = data[:,i].astype(np.double).mean()                                   ## Normalization. Record mean and standard deviation 
+                            print('other type') 
+                    one_hot = np.array(one_hot).reshape(-1,2) 
+                    data = np.concatenate((data,one_hot),axis = 1)  
+              
+            data = np.delete(data,170,1)
+            data = np.delete(data,169,1)
+            data = np.delete(data,167,1)
+            data = np.delete(data,166,1)
+            data = np.delete(data,165,1) 
+            data = np.delete(data,164,1)
+            data = np.delete(data,163,1)
+            data = data.astype(np.double)
+             
+            for i in range(data.shape[1]):  
+                if i == 3:
+                    continue
+                if name == 'train':                                                             ## Normalization. Record mean and standard deviation 
+                    mean = data[:,i].astype(np.double).mean()
                     std = data[:,i].astype(np.double).std()
                     if(std == 0):                                           
-                        print(i)
+                        print(name,' ',i,' ',data[0][i])
                     data[:,i] = (data[:,i].astype(np.double) - mean) / std 
-                    self.normalize[i] = [mean,std]
-
-                else: 
-                    if name == 'train':                                                         ## Normalization. Record mean and standard deviation 
-                        mean = data[:,i].astype(np.double).mean()
-                        std = data[:,i].astype(np.double).std()
-                        if(std == 0):                                           
-                            print(i)
-                        data[:,i] = (data[:,i].astype(np.double) - mean) / std 
-                        self.normalize[i] = [mean,std]
-                    else:
-                        data[:,i] = (data[:,i].astype(np.double) - self.normalize[i][0]) / self.normalize[i][1] 
+                    self.normalize[i] = [mean,std] 
+                else:
+                    data[:,i] = (data[:,i].astype(np.double) - self.normalize[i][0]) / self.normalize[i][1] 
                        
-
-
+             
             if name == 'train' :                                                             
                 np.random.shuffle(data)                                                         
                 Y = data[:int(data.shape[0]*0.9),3].reshape(-1,1).astype(np.double)             ## Split training and validation set, and extract attribute #4 as targets
@@ -144,8 +155,8 @@ class Datamanager():
                                 count_0 = count_0 + 1
                             else:
                                 count_1 = count_1 + 1 
-                        #print('count_0:',count_0)
-                        #print('count_1:',count_1)
+                    #print('count_0:',count_0)
+                    #print('count_1:',count_1)
 
                 #print(X.shape)
                 #print(Y.shape) 
