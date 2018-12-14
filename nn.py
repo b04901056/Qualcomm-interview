@@ -15,13 +15,13 @@ class Datamanager():
         self.threshold = 1e-10              ## The threshold for classifying the label of the sample after simoid function 
         self.normalize = {}                 ## Record the mean and standard deviation for testing set normalization 
 
-        self.over_sample = False            ## Determine whether copy the positive (attribute #4 = 2) samples
+        self.over_sample = True             ## Determine whether copy the positive (attribute #4 = 2) samples
         self.over_sample_rate = 150         ## Number of copies
 
-        self.down_sample = False            ## Determine whether delete the negative (attribute #4 = 1) samples
+        self.down_sample = True             ## Determine whether delete the negative (attribute #4 = 1) samples
         self.down_sample_rate = 2           ## Make number of negative samples = down_sample_rate * Number of positive samples
  
-        self.smote = True                   ## Determine whether use SMOTE to generate minor class samples    source: https://imbalanced-learn.org/en/stable/generated/imblearn.over_sampling.SMOTE.html
+        self.smote = False                  ## Determine whether use SMOTE to generate minor class samples    source: https://imbalanced-learn.org/en/stable/generated/imblearn.over_sampling.SMOTE.html
 
         self.weighted_loss = True           ## Determine whether adjust the weight of BCE loss function
         self.weighted_loss_rate = 0.1       ## Weight of negative samples in loss function ( 1 - weighted_loss_rate for positive samples)
@@ -46,14 +46,14 @@ class Datamanager():
                 #data = np.delete(data,2542,0)    
     
             data = np.delete(data,176,1)            ## These columns have std = 0 => remove
+            data = np.delete(data,171,1)
+            data = np.delete(data,170,1)
+            data = np.delete(data,169,1)         
             data = np.delete(data,167,1)
-            data = np.delete(data,166,1)
-            data = np.delete(data,165,1)         
-            data = np.delete(data,5,1)
-            data = np.delete(data,4,1) 
-            data = np.delete(data,166,1)  
+            data = np.delete(data,166,1) 
             data = np.delete(data,165,1)  
-            data = np.delete(data,164,1)  
+            data = np.delete(data,5,1)  
+            data = np.delete(data,4,1)  
  
             feature_num = data.shape[1] 
             for i in range(feature_num):           
@@ -67,11 +67,43 @@ class Datamanager():
                             print(j)
                             print('error target')
                 elif i == 163:                                                                  ## One hot encoding
-
+                    one_hot = []
+                    for j in range(data.shape[0]):
+                        if data[j][i] == '1':
+                            one_hot.append([1,0])
+                        elif data[j][i] == '3':
+                            one_hot.append([0,1])
+                        else:
+                            print(j,i,data[j][i]) 
+                            print('other type') 
+                    one_hot = np.array(one_hot).reshape(-1,2) 
+                    data = np.concatenate((data,one_hot),axis = 1)                   
                 elif i == 164:                                                                  ## One hot encoding
-
+                    one_hot = []
+                    for j in range(data.shape[0]):
+                        if data[j][i] == '1':
+                            one_hot.append([1,0,0])
+                        elif data[j][i] == '3':
+                            one_hot.append([0,1,0])
+                        elif data[j][i] == '9909':
+                            one_hot.append([0,0,1])
+                        else:
+                            print(j,i,data[j][i]) 
+                            print('other type') 
+                    one_hot = np.array(one_hot).reshape(-1,3) 
+                    data = np.concatenate((data,one_hot),axis = 1) 
                 elif i == 169:                                                                  ## One hot encoding
-
+                    one_hot = []
+                    for j in range(data.shape[0]):
+                        if data[j][i] == '1':
+                            one_hot.append([1,0])
+                        elif data[j][i] == '99':
+                            one_hot.append([0,1])
+                        else:
+                            print(j,i,data[j][i]) 
+                            print('other type') 
+                    one_hot = np.array(one_hot).reshape(-1,2) 
+                    data = np.concatenate((data,one_hot),axis = 1) 
                 elif data[0][i] == 'TRUE' or data[0][i] == 'FALSE':                             ## One hot encoding
                     one_hot = []
                     for j in range(data.shape[0]):
@@ -92,7 +124,7 @@ class Datamanager():
             data = np.delete(data,165,1) 
             data = np.delete(data,164,1)
             data = np.delete(data,163,1)
-            data = data.astype(np.double)
+            data = data.astype(np.double) 
              
             for i in range(data.shape[1]):  
                 if i == 3:
@@ -104,7 +136,7 @@ class Datamanager():
                         print(name,' ',i,' ',data[0][i])
                     data[:,i] = (data[:,i].astype(np.double) - mean) / std 
                     self.normalize[i] = [mean,std] 
-                else:
+                elif name == 'test':
                     data[:,i] = (data[:,i].astype(np.double) - self.normalize[i][0]) / self.normalize[i][1] 
                        
              
@@ -121,12 +153,10 @@ class Datamanager():
                     count_1_list = []
                     for i in range(Y.shape[0]):
                         if Y[i][0] == 0:
-                            count_0 = count_0 + 1
+                            count_0 = count_0 + 1 
                         else:
                             count_1 = count_1 + 1
-                            count_1_list.append(i)
-                    print('count_0:',count_0)
-                    print('count_1:',count_1)
+                            count_1_list.append(i) 
                     if self.over_sample:                                                        ## Copy the positive (attribute #4 = 2) samples 
                         ori_one_X , ori_one_Y = X[count_1_list] , Y[count_1_list] 
                         for i in range(self.over_sample_rate): 
@@ -155,11 +185,11 @@ class Datamanager():
                                 count_0 = count_0 + 1
                             else:
                                 count_1 = count_1 + 1 
-                    #print('count_0:',count_0)
-                    #print('count_1:',count_1)
+                    print('count_0:',count_0)
+                    print('count_1:',count_1)
 
-                #print(X.shape)
-                #print(Y.shape) 
+                print(X.shape)
+                print(Y.shape) 
 
                 X,Y = torch.from_numpy(X).cuda(),torch.from_numpy(Y).cuda()                                         ## Convert numpy array to tensor for Pytorch
                 train_dataset = Data.TensorDataset(data_tensor=X[:], target_tensor=Y[:])                            ## Wrap up the input/target tensor into TensorDataset   source: https://pytorch.org/docs/stable/data.html
@@ -284,11 +314,11 @@ class DNN(nn.Module):                                                           
             self.den.append( nn.Sequential(
                 nn.Linear(args.unit[i-1], args.unit[i]),                                ## Source: https://pytorch.org/docs/stable/nn.html
                 nn.ReLU(),
-                nn.Dropout(0.2)
+                nn.Dropout(0.5)
             )) 
         self.den.append( nn.Sequential(
             nn.Linear(args.unit[-2], args.unit[-1]),
-            nn.Dropout(0.2),
+            nn.Dropout(0.5),
             nn.Sigmoid(),
         )) 
 
