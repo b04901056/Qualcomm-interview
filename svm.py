@@ -248,7 +248,7 @@ with open(sys.argv[2],newline='') as csvfile:
     Negative = []
 
     for i in range(Y.shape[0]):
-        if Y[i] == 1:
+        if clf.predict(X[i].reshape(1,-1)) == 1:
             Positive.append(newData[i])
         else:
             Negative.append(newData[i]) 
