@@ -12,9 +12,7 @@ with open(sys.argv[1],newline='') as csvfile:
     data = data[2:] 
     data = np.array(data) 
 
-    print(pearsonr(data[:,3].astype(np.double),data[:,116].astype(np.double))[0])
-    print(pearsonr(data[:,3].astype(np.double),data[:,162].astype(np.double))[0])   
-    input()
+     
     data = np.delete(data,176,1)            ## These columns have std = 0 => remove
     data = np.delete(data,171,1)
     data = np.delete(data,170,1)

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from imblearn.over_sampling import SMOTE
       
 
-weight_positive = 0.9999999999999                      ## Make Decision Tree Classifier cost-sensitive
+weight_positive = 0.9999999999999           ## Make Decision Tree Classifier cost-sensitive
 normalize = {}                              ## Record the mean and standard deviation for testing set normalization
 logisticRegr = LogisticRegression(class_weight = {0 : 1 - weight_positive , 1 : weight_positive}) ## Source: https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html
 
@@ -109,10 +109,10 @@ with open(sys.argv[1],newline='') as csvfile:
         data[:,i] = (data[:,i].astype(np.double) - mean) / std  
         normalize[i] = [mean,std]  
 
-    Y = data[:,3].reshape(-1,1).astype(np.double)                       ## Extract attribute #4 as targets
+    Y = data[:,3].reshape(-1,1).astype(np.double)                                       ## Extract attribute #4 as targets
     X = np.delete(data,3,1).astype(np.double)
     
-    #sm = SMOTE(sampling_strategy = 1)                                   ## Use SMOTE to generate minor class samples    source: https://imbalanced-learn.org/en/stable/generated/imblearn.over_sampling.SMOTE.html
+    #sm = SMOTE(sampling_strategy = 1)                                                  ## Use SMOTE to generate minor class samples    source: https://imbalanced-learn.org/en/stable/generated/imblearn.over_sampling.SMOTE.html
     #X, Y = sm.fit_resample(X, Y) 
     #print(X.shape)
     #print(Y) 
@@ -127,7 +127,7 @@ with open(sys.argv[2],newline='') as csvfile:
     data = data[2:] 
     data = np.array(data)      
 
-    data = np.delete(data,176,1)            ## These columns have std = 0 => remove
+    data = np.delete(data,176,1)                                                        ## These columns have std = 0 => remove
     data = np.delete(data,171,1)
     data = np.delete(data,170,1)
     data = np.delete(data,169,1)         
@@ -213,7 +213,7 @@ with open(sys.argv[2],newline='') as csvfile:
             continue 
         data[:,i] = (data[:,i].astype(np.double) - normalize[i][0]) / normalize[i][1] 
 
-    Y = data[:,3].reshape(-1,1).astype(np.double)                       ## Extract attribute #4 as targets
+    Y = data[:,3].reshape(-1,1).astype(np.double)                                           ## Extract attribute #4 as targets
     X = np.delete(data,3,1).astype(np.double) 
  
     t1_p1 = 0                                                                               ## Confusion matrix initialization

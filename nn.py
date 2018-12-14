@@ -45,7 +45,7 @@ class Datamanager():
                 #data = np.delete(data,11,0) 
                 #data = np.delete(data,2542,0)    
     
-            data = np.delete(data,176,1)            ## These columns have std = 0 => remove
+            data = np.delete(data,176,1)                                                        ## These columns have std = 0 => remove
             data = np.delete(data,171,1)
             data = np.delete(data,170,1)
             data = np.delete(data,169,1)         

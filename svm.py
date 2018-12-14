@@ -5,7 +5,7 @@ from sklearn.decomposition import PCA       ## Source: https://scikit-learn.org/
 import matplotlib.pyplot as plt
 from imblearn.over_sampling import SMOTE
 
-weight_positive = 0.995                       ## Make SVM cost-sensitive
+weight_positive = 0.995                     ## Make SVM cost-sensitive
 normalize = {}                              ## Record the mean and standard deviation for testing set normalization
 clf = SVC(gamma='auto',class_weight = {0 : 1 - weight_positive , 1 : weight_positive})  ## Source: https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
 
@@ -108,7 +108,7 @@ with open(sys.argv[1],newline='') as csvfile:
         data[:,i] = (data[:,i].astype(np.double) - mean) / std  
         normalize[i] = [mean,std]  
 
-    Y = data[:,3].reshape(-1,1).astype(np.double)                       ## Extract attribute #4 as targets
+    Y = data[:,3].reshape(-1,1).astype(np.double)                        ## Extract attribute #4 as targets
     X = np.delete(data,3,1).astype(np.double)
     
     #sm = SMOTE(sampling_strategy = 1)                                   ## Use SMOTE to generate minor class samples    source: https://imbalanced-learn.org/en/stable/generated/imblearn.over_sampling.SMOTE.html
@@ -212,7 +212,7 @@ with open(sys.argv[2],newline='') as csvfile:
             continue 
         data[:,i] = (data[:,i].astype(np.double) - normalize[i][0]) / normalize[i][1] 
 
-    Y = data[:,3].reshape(-1,1).astype(np.double)                       ## Extract attribute #4 as targets
+    Y = data[:,3].reshape(-1,1).astype(np.double)                                           ## Extract attribute #4 as targets
     X = np.delete(data,3,1).astype(np.double) 
  
     t1_p1 = 0                                                                               ## Confusion matrix initialization
@@ -236,7 +236,7 @@ with open(sys.argv[2],newline='') as csvfile:
 ############################################################################### 
 ################            Visualization            ########################## 
 ############################################################################### 
-    pca = PCA(n_components = 2)                                         ## Use PCA map the data onto a two-dimensional plane 
+    pca = PCA(n_components = 2)                                                             ## Use PCA map the data onto a two-dimensional plane 
     newData = pca.fit_transform(X) 
 
     plt.figure(figsize = (8,8))                                                             ## Source: https://matplotlib.org/gallery/lines_bars_and_markers/scatter_with_legend.html

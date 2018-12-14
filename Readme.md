@@ -32,3 +32,8 @@ t1_p1: True  positive t0_p1:  False negative
 t1_p0: False positive t0_p0:   True negative
 
 The image represents the result of classification on testing data after applying PCA to reduce dimension to 2.
+
+Visualize the correlation 
+```
+python .\correlation.py .\DataMining_IV_x2\DataSet_IV_Training.csv .\DataMining_IV_x2\DataSet_IV_Test.csv
+```
