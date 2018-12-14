@@ -14,7 +14,7 @@ This the Readme file of Qualcomm interview task
 
 DNN implementation (with over/down sampling)
 ```
-python .\train.py -train .\DataMining_IV_x2\DataSet_IV_Training.csv -test .\DataMining_IV_x2\DataSet_IV_Test.csv  -u 170 32 1
+python .\inputation_train.py -train .\DataMining_IV_x2\DataSet_IV_Training.csv -u 10  16 32 16 2 1
 ```
 
 SVM implementation
@@ -25,11 +25,6 @@ python .\svm.py .\DataMining_IV_x2\DataSet_IV_Training.csv .\DataMining_IV_x2\Da
 Logistic Regression implementation
 ```
 python .\logistic_regression.py .\DataMining_IV_x2\DataSet_IV_Training.csv .\DataMining_IV_x2\DataSet_IV_Test.csv
-```
-
-Decision Tree implementation
-```
-python .\decision_tree.py .\DataMining_IV_x2\DataSet_IV_Training.csv .\DataMining_IV_x2\DataSet_IV_Test.csv
 ```
 
 t1_p1: True  positive t0_p1:  False negative
